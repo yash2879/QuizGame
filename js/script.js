@@ -1,52 +1,49 @@
-var questionCabinet = ["abc is abc s111111111o how abc?",
-                        "xyz xyz xyz so 2222222xyz?",
-                        "xyz xyz xyz s33333333333o xyz?",
-                        "xyz xyz xyz s00000000o xyz?",
-                        "xyz xyzqqqqqqqqqqq xyz so xyz?",
-                        "abc is abc s111111111o how abc?",
-                        "xyz xyz xyz so 2222222xyz?",
-                        "xyz xyz xyz s33333333333o xyz?",
-                        "xyz xyz xyz s00000000o xyz?",
-                        "abc is abc s111111111o how abc?",
-                        "xyz xyz xyz so 2222222xyz?",
-                        "xyz xyz xyz s33333333333o xyz?",
-                        "xyz xyz xyz s00000000o xyz?",
-                        "abc is abc s111111111o how abc?",
-                        "xyz xyz xyz so 2222222xyz?",
-                        "xyz xyz xyz s33333333333o xyz?",
-                        "xyz xyz xyz s00000000o xyz?",
-                        "abc is abc s111111111o how abc?",
-                        "xyz xyz xyz so 2222222xyz?",
-                        "xyz xyz xyz s33333333333o xyz?"];
-var answerCabinet = []
-var optionsCabinet = [["a","b","c","d"],
-                    ["a1","b1","c1","d1"],
-                    ["a2","b2","c2","d2"],
-                    ["a3","b3","c3","d3"],
-                    ["a","b","c","d"],
-                    ["a","b","c","d"],
-                    ["a","b","c","d"],
-                    ["a","b","c","d"],
-                    ["a","b","c","d"],
-                    ["a","b","c","d"],
-                    ["a","b","c","d"],
-                    ["a","b","c","d"],
-                    ["a","b","c","d"],
-                    ["a","b","c","d"],
-                    ["a","b","c","d"],
-                    ["a","b","c","d"],
-                    ["a","b","c","d"],
-                    ["a","b","c","d"],
-                    ["a","b","c","d"],
-                    ["a","b","c","d"],
-                    ["a","b","c","d"]]
+var questionCabinet = ["What is the most popular programming problem?",
+                        "What is the golden rule in programming?",
+                        "How do programmers enjoy life?",
+                        "Can you summarize the life of programmers in four words?",
+                        "Why do programmers keep pressing the F5 button?",
+                        "How programmers open a Jar?",
+                        "As a programmer, where do you see yourself 10 years from now?",
+                        "What are the most expensive programming languages?",
+                        "The only caffè latte drink by JavaScript developers?",
+                        "Can you give me a programming music note?",
+                        ];
+var answerCabinet = ["Missing a Semicolon.",
+                    "If it works, don’t touch it.",
+                    "When they see their codes run without error.",
+                    "Eat. Sleep. Code. Repeat.",
+                    "Because it's refreshing.",
+                    "They use Java.",
+                    "Sitting in front of a computer.",
+                    "Ruby and Perl.",
+                    "Mocha.",
+                    "C#",
+                    ]
+var optionsCabinet = [["Garbage collector.","Missing a Semicolon.","Coin Change.","Dining Philosophers."],
+                    ["Never stop","Small codes only","If it works, don’t touch it.","01010101"],
+                    ["When they see their codes run without error.","At beaches.","On moountains.","In the Matrix."],
+                    ["ctrl + s ctrl + c ctrl + x ctrl + v","0 1 zero one.","code code code code.","Eat. Sleep. Code. Repeat."],
+                    ["F5 is special.","Because it's refreshing.","It enables auto-coding capabilities.","It opens stackoverflow >_<"],
+                    ["By opening the Lid.","Break the jar","They use Java.","Write a code to open it."],
+                    ["CEO of a massive company.","Chilling in the car.","Sitting in front of a computer.","DED"],
+                    ["Java.","HTML.","Python.","Ruby and Perl."],
+                    ["Tea.","Coffee.","Mocha.","Hot Choco."],
+                    ["C#","B major","E#","G minor"]]
 
 var questionNo = 0
 var totalQues = questionCabinet.length;
 
+var clickedOption = null;
+var totalMarksP = 0;
+var marksAddCoefficient = 100/totalQues;
+
+
 const quesCard_ques = document.getElementsByClassName("question_card__question")[0];
 const quesCard_opts = document.getElementsByClassName("question_card__options")[0];
 const quesCard_progressBar = document.getElementsByClassName("question_card__progress_bar")[0];
+
+const infoBar = document.getElementsByClassName("info_bar")[0];
 
 const question = document.createElement("p");
 question.classList.add("question_text");
@@ -54,6 +51,8 @@ question.classList.add("question_text");
 
 const optionsForm = document.createElement("form");
 optionsForm.classList.add("options_form");
+
+const quesNoSpan = document.createElement("span");
 
 // const option = document.createElement("input");
 // option.setAttribute("type", "radio");
@@ -80,7 +79,7 @@ function update() {
 
 
     var progress = ((questionNo+1)/totalQues)*100;
-    console.log(progress)
+    // console.log(progress)
     quesCard_progressBar.style.width = `${progress}%`;
     quesCard_progressBar.style.backgroundColor = `rgb(${255-(progress*1.25)}, ${(progress*2)+10}, 43)`;
 
@@ -99,13 +98,62 @@ function update() {
 
 function setOptions(quesNum) {
     optionsForm.innerHTML = `
-                            <input type="radio" name="opt1" id="opt_a" value="${optionsCabinet[quesNum][0]}">
-                            <label for="opt_a">${optionsCabinet[quesNum][0]}</label><br>
-                            <input type="radio" name="opt2" id="opt_b" value="${optionsCabinet[quesNum][1]}">
-                            <label for="opt_b">${optionsCabinet[quesNum][1]}</label><br>
-                            <input type="radio" name="opt3" id="opt_c" value="${optionsCabinet[quesNum][2]}">
-                            <label for="opt_c">${optionsCabinet[quesNum][2]}</label><br>
-                            <input type="radio" name="opt4" id="opt_d" value="${optionsCabinet[quesNum][3]}">
-                            <label for="opt_d">${optionsCabinet[quesNum][3]}</label>`;
+                        <div>
+                            <input onclick="answerClicked()" type="radio" name="que_${questionNo}" id="opt_a" value="${optionsCabinet[quesNum][0]}">
+                            <label class="input_label" for="opt_a">A. ${optionsCabinet[quesNum][0]}</label><br>
+                        </div>
+                        <div>
+                            <input onclick="answerClicked()" type="radio" name="que_${questionNo}" id="opt_b" value="${optionsCabinet[quesNum][1]}">
+                            <label class="input_label" for="opt_b">B. ${optionsCabinet[quesNum][1]}</label><br>
+                        </div>
+                        <div>
+                            <input onclick="answerClicked()" type="radio" name="que_${questionNo}" id="opt_c" value="${optionsCabinet[quesNum][2]}">
+                            <label class="input_label" for="opt_c">C. ${optionsCabinet[quesNum][2]}</label><br>
+                        </div>
+                        <div>
+                            <input onclick="answerClicked()" type="radio" name="que_${questionNo}" id="opt_d" value="${optionsCabinet[quesNum][3]}">
+                            <label class="input_label" for="opt_d">D. ${optionsCabinet[quesNum][3]}</label>
+                        </div>`;
     quesCard_opts.appendChild(optionsForm);
 }
+
+function answerClicked() {
+    if(document.getElementById("opt_a").checked)
+    {
+        clickedOption = document.getElementById("opt_a").value;
+    }
+    if(document.getElementById("opt_b").checked)
+    {
+        clickedOption = document.getElementById("opt_b").value;
+    }
+    if(document.getElementById("opt_c").checked)
+    {
+        clickedOption = document.getElementById("opt_c").value;
+    }
+    if(document.getElementById("opt_d").checked)
+    {
+        clickedOption = document.getElementById("opt_d").value;
+    }
+    if(checkCorrect())
+    {
+        totalMarksP = marksAddCoefficient+totalMarksP;
+        console.log(totalMarksP);
+    }
+    setTimeout(incQuesNo,1000);
+}
+
+function checkCorrect() {
+    if (clickedOption == answerCabinet[questionNo]) {
+        return true;
+    }
+}
+
+questionCabinet.forEach(function (que) {
+    var i = 1;
+
+    quesNoSpan.innerHTML = `${i}`;
+    i=i+1;
+
+    infoBar.appendChild(quesNoSpan);
+
+})
