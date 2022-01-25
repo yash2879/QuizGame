@@ -38,6 +38,7 @@ var clickedOption = null;
 var totalMarksP = 0;
 var marksAddCoefficient = 100/totalQues;
 
+var i = 1;
 
 const quesCard_ques = document.getElementsByClassName("question_card__question")[0];
 const quesCard_opts = document.getElementsByClassName("question_card__options")[0];
@@ -52,7 +53,6 @@ question.classList.add("question_text");
 const optionsForm = document.createElement("form");
 optionsForm.classList.add("options_form");
 
-const quesNoSpan = document.createElement("span");
 
 // const option = document.createElement("input");
 // option.setAttribute("type", "radio");
@@ -149,11 +149,13 @@ function checkCorrect() {
 }
 
 questionCabinet.forEach(function (que) {
-    var i = 1;
-
-    quesNoSpan.innerHTML = `${i}`;
+    
+    const quesNoSpan = document.createElement("div");
+    quesNoSpan.innerHTML = `<button onclick="queCabButtonClicked(${i})">${i}</button>`;
     i=i+1;
-
     infoBar.appendChild(quesNoSpan);
-
 })
+
+function queCabButtonClicked(num) {
+    questionNo=num-1
+}
