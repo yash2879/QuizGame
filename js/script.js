@@ -22,7 +22,7 @@ var answerCabinet = ["Missing a Semicolon.",
                     ]
 var optionsCabinet = [["Garbage collector.","Missing a Semicolon.","Coin Change.","Dining Philosophers."],
                     ["Never stop","Small codes only","If it works, don’t touch it.","01010101"],
-                    ["When they see their codes run without error.","At beaches.","On moountains.","In the Matrix."],
+                    ["When they see their codes run without error.","At beaches.","On mountains.","In the Matrix."],
                     ["ctrl + s, ctrl + c, ctrl + x, ctrl + v.","0 1 zero one.","code code code code.","Eat. Sleep. Code. Repeat."],
                     ["F5 is special.","Because it's refreshing.","It enables auto-coding capabilities.","It opens stackoverflow >_<"],
                     ["By opening the Lid.","Break the jar","They use Java.","Write a code to open it."],
@@ -38,11 +38,14 @@ answerCabinet.forEach(function () {
 var questionNo = 0
 var totalQues = questionCabinet.length;
 
-var clickedOption = null;
-var totalMarksP = 0;
-var marksAddCoefficient = 100/totalQues;
+var clickedOption = null
+var totalMarksP = 0
+var marksAddCoefficient = 100/totalQues
 
-var i = 1;
+var i = 1
+var clickedOpsNo = 0
+var progress = 0
+
 
 const quesCard_ques = document.getElementsByClassName("question_card__question")[0];
 const quesCard_opts = document.getElementsByClassName("question_card__options")[0];
@@ -58,6 +61,15 @@ const optionsForm = document.createElement("form");
 optionsForm.classList.add("options_form");
 
 
+
+questionCabinet.forEach(function (que) {
+    const quesNoSpan = document.createElement("div");
+    quesNoSpan.innerHTML = `<button onclick="queCabButtonClicked(${i})">${i}</button>`;
+    i=i+1;
+    infoBar.appendChild(quesNoSpan);
+})
+
+
 // const option = document.createElement("input");
 // option.setAttribute("type", "radio");
 // option.classList.add("input_options");
@@ -71,7 +83,7 @@ function incQuesNo(params) {
         questionNo = questionNo + 1;
     }
     else{
-        submitQuiz()
+        confirmSubmition()
     }
     setOptions(questionNo);
 }
@@ -88,7 +100,7 @@ function decQuesNo(params) {
 function update() {
 
 
-    var progress = ((questionNo+1)/totalQues)*100;
+    progress = ((clickedOpsNo)/totalQues)*100;
     // console.log(progress)
     quesCard_progressBar.style.width = `${progress}%`;
     quesCard_progressBar.style.backgroundColor = `rgb(${255-(progress*1.25)}, ${(progress*2)+10}, 43)`;
@@ -155,6 +167,12 @@ function setOptions(quesNum) {
 }
 
 function answerClicked() {
+    if (optionsCabinet[questionNo].includes(solvedAnswers[questionNo])) {
+        console.log("bruhhh")
+    }
+    else{
+        clickedOpsNo = clickedOpsNo+1
+    }
     if(document.getElementById("opt_a").checked)
     {
         clickedOption = document.getElementById("opt_a").value;
@@ -189,19 +207,20 @@ function checkCorrect() {
     }
 }
 
-questionCabinet.forEach(function (que) {
-    
-    const quesNoSpan = document.createElement("div");
-    quesNoSpan.innerHTML = `<button onclick="queCabButtonClicked(${i})">${i}</button>`;
-    i=i+1;
-    infoBar.appendChild(quesNoSpan);
-})
 
 function queCabButtonClicked(num) {
     questionNo=num-1
     setOptions(questionNo)
 }
 
+function confirmSubmition() {
+    if (confirm(`Your progress is ${progress}% do you really want to submit?`)) {
+        submitQuiz()
+    }
+    else{
+        console.log("reviwing the questions again!")
+    }
+}
 
 function submitQuiz() {
     document.getElementById("submitP").style.display = "block"
