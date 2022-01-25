@@ -204,7 +204,7 @@ function queCabButtonClicked(num) {
 
 
 function submitQuiz() {
-    document.getElementById("submitP").style.display = "inherit"
+    document.getElementById("submitP").style.display = "block"
     document.getElementById("submitP").innerHTML = `<p style="font-size:30px; text-align:center; margin-top: 40px">Your Score is</p>
                                                     <p style="font-size:60px; text-align:center">${totalMarksP}</p>
                                                     <button onclick="reloadPage()">Re-Play</button>`
@@ -215,7 +215,7 @@ function reloadPage() {
 }
 
 function showRules() {
-    document.getElementById("rulesP").style.display = "inherit"
+    document.getElementById("rulesP").style.display = "block"
 }
 
 function closeRules() {
