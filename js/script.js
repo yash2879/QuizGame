@@ -23,13 +23,17 @@ var answerCabinet = ["Missing a Semicolon.",
 var optionsCabinet = [["Garbage collector.","Missing a Semicolon.","Coin Change.","Dining Philosophers."],
                     ["Never stop","Small codes only","If it works, don’t touch it.","01010101"],
                     ["When they see their codes run without error.","At beaches.","On moountains.","In the Matrix."],
-                    ["ctrl + s ctrl + c ctrl + x ctrl + v","0 1 zero one.","code code code code.","Eat. Sleep. Code. Repeat."],
+                    ["ctrl + s, ctrl + c, ctrl + x, ctrl + v.","0 1 zero one.","code code code code.","Eat. Sleep. Code. Repeat."],
                     ["F5 is special.","Because it's refreshing.","It enables auto-coding capabilities.","It opens stackoverflow >_<"],
                     ["By opening the Lid.","Break the jar","They use Java.","Write a code to open it."],
                     ["CEO of a massive company.","Chilling in the car.","Sitting in front of a computer.","DED"],
                     ["Java.","HTML.","Python.","Ruby and Perl."],
                     ["Tea.","Coffee.","Mocha.","Hot Choco."],
                     ["C#","B major","E#","G minor"]]
+var solvedAnswers = []                
+answerCabinet.forEach(function () {
+    solvedAnswers.push("")    
+})
 
 var questionNo = 0
 var totalQues = questionCabinet.length;
@@ -66,11 +70,17 @@ function incQuesNo(params) {
     if (questionNo!= (totalQues-1)) {
         questionNo = questionNo + 1;
     }
+    else{
+        submitQuiz()
+    }
     setOptions(questionNo);
 }
 function decQuesNo(params) {
     if (questionNo>0) {
         questionNo = questionNo - 1;
+    }
+    else{
+        showRules()
     }
     setOptions(questionNo);
 }
@@ -93,6 +103,25 @@ function update() {
     question.innerHTML = `<b>${questionNo+1}.</b> ${questionCabinet[questionNo]}`;
     quesCard_ques.appendChild(question);
 
+    if (questionNo==0) {
+        document.getElementById("prev_B").innerHTML = "Rules"
+        // document.getElementById("prev_B").style.display = "none"
+    }
+    else{
+        document.getElementById("prev_B").innerHTML = "Previous"
+        // document.getElementById("prev_B").style.display = "inherit"
+    }
+
+    if (questionNo==totalQues-1) {
+        document.getElementById("next_B").innerHTML = "Submit"
+        // document.getElementById("next_B").style.display = "none"
+    }
+    else{
+        document.getElementById("next_B").innerHTML = "Next"
+        // document.getElementById("next_B").style.display = "inherit"
+    }
+
+
     setTimeout(update, 100);
 }
 
@@ -113,26 +142,38 @@ function setOptions(quesNum) {
                         <div>
                             <input onclick="answerClicked()" type="radio" name="que_${questionNo}" id="opt_d" value="${optionsCabinet[quesNum][3]}">
                             <label class="input_label" for="opt_d">D. ${optionsCabinet[quesNum][3]}</label>
-                        </div>`;
+                        </div>
+                        <div class="clicked_option"><p>Selected option : ${solvedAnswers[quesNum]}</p></div>`
+                        
     quesCard_opts.appendChild(optionsForm);
+    if (solvedAnswers[questionNo]=="") {
+        document.getElementsByClassName("clicked_option")[0].style.display = "none"
+    }
+    else{
+        document.getElementsByClassName("clicked_option")[0].style.display = "inherit"
+    }
 }
 
 function answerClicked() {
     if(document.getElementById("opt_a").checked)
     {
         clickedOption = document.getElementById("opt_a").value;
+        solvedAnswers[questionNo] = document.getElementById("opt_a").value
     }
     if(document.getElementById("opt_b").checked)
     {
         clickedOption = document.getElementById("opt_b").value;
+        solvedAnswers[questionNo] = document.getElementById("opt_b").value
     }
     if(document.getElementById("opt_c").checked)
     {
         clickedOption = document.getElementById("opt_c").value;
+        solvedAnswers[questionNo] = document.getElementById("opt_c").value
     }
     if(document.getElementById("opt_d").checked)
     {
         clickedOption = document.getElementById("opt_d").value;
+        solvedAnswers[questionNo] = document.getElementById("opt_d").value
     }
     if(checkCorrect())
     {
@@ -158,4 +199,25 @@ questionCabinet.forEach(function (que) {
 
 function queCabButtonClicked(num) {
     questionNo=num-1
+    setOptions(questionNo)
+}
+
+
+function submitQuiz() {
+    document.getElementById("submitP").style.display = "inherit"
+    document.getElementById("submitP").innerHTML = `<p style="font-size:30px; text-align:center; margin-top: 40px">Your Score is</p>
+                                                    <p style="font-size:60px; text-align:center">${totalMarksP}</p>
+                                                    <button onclick="reloadPage()">Re-Play</button>`
+}
+
+function reloadPage() {
+    location.reload();
+}
+
+function showRules() {
+    document.getElementById("rulesP").style.display = "inherit"
+}
+
+function closeRules() {
+    document.getElementById("rulesP").style.display = "none"
 }
