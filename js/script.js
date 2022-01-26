@@ -32,7 +32,7 @@ var optionsCabinet = [["Garbage collector.","Missing a Semicolon.","Coin Change.
                     ["C#","B major","E#","G minor"]]
 var solvedAnswers = []                
 answerCabinet.forEach(function () {
-    solvedAnswers.push("")    
+    solvedAnswers.push(["",0])    
 })
 
 var questionNo = 0
@@ -155,10 +155,10 @@ function setOptions(quesNum) {
                             <input onclick="answerClicked()" type="radio" name="que_${questionNo}" id="opt_d" value="${optionsCabinet[quesNum][3]}">
                             <label class="input_label" for="opt_d">D. ${optionsCabinet[quesNum][3]}</label>
                         </div>
-                        <div class="clicked_option"><p>Selected option : ${solvedAnswers[quesNum]}</p></div>`
+                        <div class="clicked_option"><p>Selected option : ${solvedAnswers[quesNum][0]}</p></div>`
                         
     quesCard_opts.appendChild(optionsForm);
-    if (solvedAnswers[questionNo]=="") {
+    if (solvedAnswers[questionNo][0]=="") {
         document.getElementsByClassName("clicked_option")[0].style.display = "none"
     }
     else{
@@ -167,8 +167,8 @@ function setOptions(quesNum) {
 }
 
 function answerClicked() {
-    if (optionsCabinet[questionNo].includes(solvedAnswers[questionNo])) {
-        console.log("bruhhh")
+    if (optionsCabinet[questionNo].includes(solvedAnswers[questionNo][0])) {
+        console.log("answer already clicked!")
     }
     else{
         clickedOpsNo = clickedOpsNo+1
@@ -176,25 +176,27 @@ function answerClicked() {
     if(document.getElementById("opt_a").checked)
     {
         clickedOption = document.getElementById("opt_a").value;
-        solvedAnswers[questionNo] = document.getElementById("opt_a").value
+        solvedAnswers[questionNo][0] = document.getElementById("opt_a").value
     }
     if(document.getElementById("opt_b").checked)
     {
         clickedOption = document.getElementById("opt_b").value;
-        solvedAnswers[questionNo] = document.getElementById("opt_b").value
+        solvedAnswers[questionNo][0] = document.getElementById("opt_b").value
     }
     if(document.getElementById("opt_c").checked)
     {
         clickedOption = document.getElementById("opt_c").value;
-        solvedAnswers[questionNo] = document.getElementById("opt_c").value
+        solvedAnswers[questionNo][0] = document.getElementById("opt_c").value
     }
     if(document.getElementById("opt_d").checked)
     {
         clickedOption = document.getElementById("opt_d").value;
-        solvedAnswers[questionNo] = document.getElementById("opt_d").value
+        solvedAnswers[questionNo][0] = document.getElementById("opt_d").value
     }
-    if(checkCorrect())
+    if(checkCorrect() && solvedAnswers[questionNo][1] == 0)
     {
+        
+        solvedAnswers[questionNo][1] = solvedAnswers[questionNo][1] + 1
         totalMarksP = marksAddCoefficient+totalMarksP;
         console.log(totalMarksP);
     }
@@ -214,7 +216,7 @@ function queCabButtonClicked(num) {
 }
 
 function confirmSubmition() {
-    if (confirm(`Your progress is ${progress}% do you really want to submit?`)) {
+    if (confirm(`Your progress is ${progress}% do you want to submit?`)) {
         submitQuiz()
     }
     else{
