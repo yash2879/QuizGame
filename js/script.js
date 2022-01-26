@@ -181,7 +181,7 @@ function setOptions() {
                             <input onclick="answerClicked()" type="radio" name="que_${questionNo}" id="opt_d" value="${optionsCabinet[questionNo][3]}">
                             <label class="input_label" for="opt_d">D. ${optionsCabinet[questionNo][3]}</label>
                         </div>
-                        <div class="clicked_option"><p>Selected option : ${solvedAnswers[questionNo][0]}</p></div>`
+                        <div class="clicked_option"><p>Selected option : ${solvedAnswers[questionNo]}</p></div>`
                         
     quesCard_opts.appendChild(optionsForm);
     if (solvedAnswers[questionNo]=="") {
@@ -247,7 +247,7 @@ function submitQuiz() {
 
 
     for (let j = 0; j < answerCabinet.length; j++) {
-        if (answerCabinet[j]==solvedAnswers[j][0]) {
+        if (answerCabinet[j]==solvedAnswers[j]) {
             totalMarksP = totalMarksP+marksAddCoefficient
         }
     }
