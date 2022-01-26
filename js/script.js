@@ -1,3 +1,7 @@
+
+// Creating arrays for storing:
+
+// QUESTIONS
 var questionCabinet = ["What is the most popular programming problem?",
                         "What is the golden rule in programming?",
                         "How do programmers enjoy life?",
@@ -8,7 +12,8 @@ var questionCabinet = ["What is the most popular programming problem?",
                         "What are the most expensive programming languages?",
                         "The only caffè latte drink by JavaScript developers?",
                         "Can you give me a programming music note?",
-                        ];
+                        ]
+// CORRECT ANSWERS 
 var answerCabinet = ["Missing a Semicolon.",
                     "If it works, don’t touch it.",
                     "When they see their codes run without error.",
@@ -20,6 +25,7 @@ var answerCabinet = ["Missing a Semicolon.",
                     "Mocha.",
                     "C#",
                     ]
+// ALL OPTIONS
 var optionsCabinet = [["Garbage collector.","Missing a Semicolon.","Coin Change.","Dining Philosophers."],
                     ["Never stop","Small codes only","If it works, don’t touch it.","01010101"],
                     ["When they see their codes run without error.","At beaches.","On mountains.","In the Matrix."],
@@ -29,38 +35,52 @@ var optionsCabinet = [["Garbage collector.","Missing a Semicolon.","Coin Change.
                     ["CEO of a massive company.","Chilling in the car.","Sitting in front of a computer.","DED"],
                     ["Java.","HTML.","Python.","Ruby and Perl."],
                     ["Tea.","Coffee.","Mocha.","Hot Choco."],
-                    ["C#","B major","E#","G minor"]]
-var solvedAnswers = []                
+                    ["C#","B major","E#","G minor"]
+                        ]
+// ALL OPTIONS CLICKED BY USER
+var solvedAnswers = []
+
+// Pushing empty/null values into the "solvedAnswers" array, to make sure it has same length as our ANSWERS array
+
 answerCabinet.forEach(function () {
-    solvedAnswers.push(["",0])    
+    solvedAnswers.push("")    
 })
 
-var questionNo = 0
-var totalQues = questionCabinet.length;
 
-var clickedOption = null
-var totalMarksP = 0
-var marksAddCoefficient = 100/totalQues
 
-var i = 1
-var clickedOpsNo = 0
-var progress = 0
+// Declaring all our needed variable in one place (globally)
 
+var questionNo = 0                      // which question number are we currently on
+var totalQues = questionCabinet.length; // how many total number of questions are there
+var totalMarksP = 0                     // what is the % of marks we have currently
+var marksAddCoefficient = 100/totalQues // amount of marks that are being awarded for each question
+var i = 1                               // random variable for creating question pallette
+var clickedOpsNo = 0                    // how many options the user clicked until now
+var progress = 0                        // what % of the quiz is completed until now
+
+
+
+// Declaring our initial HTML elements that we are going to use later
 
 const quesCard_ques = document.getElementsByClassName("question_card__question")[0];
 const quesCard_opts = document.getElementsByClassName("question_card__options")[0];
 const quesCard_progressBar = document.getElementsByClassName("question_card__progress_bar")[0];
-
 const infoBar = document.getElementsByClassName("info_bar")[0];
+
+
+// Creating new question 
 
 const question = document.createElement("p");
 question.classList.add("question_text");
 
 
+// A form for adding options/choices
+
 const optionsForm = document.createElement("form");
 optionsForm.classList.add("options_form");
 
 
+// Creating an easy access question pallette
 
 questionCabinet.forEach(function (que) {
     const quesNoSpan = document.createElement("div");
@@ -70,23 +90,24 @@ questionCabinet.forEach(function (que) {
 })
 
 
-// const option = document.createElement("input");
-// option.setAttribute("type", "radio");
-// option.classList.add("input_options");
-
-// const label = document.createElement("label");
+// Setting questions and options for the first time 
 
 update();
-setOptions(questionNo);
+setOptions();
+
+
+// functions for increasing/decreasing current question number we are on
+
 function incQuesNo(params) {
-    if (questionNo!= (totalQues-1)) {
-        questionNo = questionNo + 1;
+    if (questionNo!= (totalQues-1)) {                   //--------
+        questionNo = questionNo + 1;                           //|
     }
     else{
         confirmSubmition()
     }
-    setOptions(questionNo);
+    setOptions();
 }
+
 function decQuesNo(params) {
     if (questionNo>0) {
         questionNo = questionNo - 1;
@@ -94,14 +115,17 @@ function decQuesNo(params) {
     else{
         showRules()
     }
-    setOptions(questionNo);
+    setOptions();
 }
+
+
+// A function which keeps repeting/updating after 100ms
 
 function update() {
 
-
     progress = ((clickedOpsNo)/totalQues)*100;
     // console.log(progress)
+
     quesCard_progressBar.style.width = `${progress}%`;
     quesCard_progressBar.style.backgroundColor = `rgb(${255-(progress*1.25)}, ${(progress*2)+10}, 43)`;
 
@@ -133,32 +157,34 @@ function update() {
         // document.getElementById("next_B").style.display = "inherit"
     }
 
-
-    setTimeout(update, 100);
+    setTimeout(update, 100); // repeat the function after 100 ms
 }
 
-function setOptions(quesNum) {
+
+// Func for setting options for the question we are currently on
+
+function setOptions() {
     optionsForm.innerHTML = `
                         <div>
-                            <input onclick="answerClicked()" type="radio" name="que_${questionNo}" id="opt_a" value="${optionsCabinet[quesNum][0]}">
-                            <label class="input_label" for="opt_a">A. ${optionsCabinet[quesNum][0]}</label><br>
+                            <input onclick="answerClicked()" type="radio" name="que_${questionNo}" id="opt_a" value="${optionsCabinet[questionNo][0]}">
+                            <label class="input_label" for="opt_a">A. ${optionsCabinet[questionNo][0]}</label><br>
                         </div>
                         <div>
-                            <input onclick="answerClicked()" type="radio" name="que_${questionNo}" id="opt_b" value="${optionsCabinet[quesNum][1]}">
-                            <label class="input_label" for="opt_b">B. ${optionsCabinet[quesNum][1]}</label><br>
+                            <input onclick="answerClicked()" type="radio" name="que_${questionNo}" id="opt_b" value="${optionsCabinet[questionNo][1]}">
+                            <label class="input_label" for="opt_b">B. ${optionsCabinet[questionNo][1]}</label><br>
                         </div>
                         <div>
-                            <input onclick="answerClicked()" type="radio" name="que_${questionNo}" id="opt_c" value="${optionsCabinet[quesNum][2]}">
-                            <label class="input_label" for="opt_c">C. ${optionsCabinet[quesNum][2]}</label><br>
+                            <input onclick="answerClicked()" type="radio" name="que_${questionNo}" id="opt_c" value="${optionsCabinet[questionNo][2]}">
+                            <label class="input_label" for="opt_c">C. ${optionsCabinet[questionNo][2]}</label><br>
                         </div>
                         <div>
-                            <input onclick="answerClicked()" type="radio" name="que_${questionNo}" id="opt_d" value="${optionsCabinet[quesNum][3]}">
-                            <label class="input_label" for="opt_d">D. ${optionsCabinet[quesNum][3]}</label>
+                            <input onclick="answerClicked()" type="radio" name="que_${questionNo}" id="opt_d" value="${optionsCabinet[questionNo][3]}">
+                            <label class="input_label" for="opt_d">D. ${optionsCabinet[questionNo][3]}</label>
                         </div>
-                        <div class="clicked_option"><p>Selected option : ${solvedAnswers[quesNum][0]}</p></div>`
+                        <div class="clicked_option"><p>Selected option : ${solvedAnswers[questionNo][0]}</p></div>`
                         
     quesCard_opts.appendChild(optionsForm);
-    if (solvedAnswers[questionNo][0]=="") {
+    if (solvedAnswers[questionNo]=="") {
         document.getElementsByClassName("clicked_option")[0].style.display = "none"
     }
     else{
@@ -166,8 +192,9 @@ function setOptions(quesNum) {
     }
 }
 
+
 function answerClicked() {
-    if (optionsCabinet[questionNo].includes(solvedAnswers[questionNo][0])) {
+    if (optionsCabinet[questionNo].includes(solvedAnswers[questionNo])) {
         console.log("answer already clicked!")
     }
     else{
@@ -175,45 +202,34 @@ function answerClicked() {
     }
     if(document.getElementById("opt_a").checked)
     {
-        clickedOption = document.getElementById("opt_a").value;
-        solvedAnswers[questionNo][0] = document.getElementById("opt_a").value
+        solvedAnswers[questionNo] = document.getElementById("opt_a").value
     }
     if(document.getElementById("opt_b").checked)
     {
-        clickedOption = document.getElementById("opt_b").value;
-        solvedAnswers[questionNo][0] = document.getElementById("opt_b").value
+        solvedAnswers[questionNo] = document.getElementById("opt_b").value
     }
     if(document.getElementById("opt_c").checked)
     {
-        clickedOption = document.getElementById("opt_c").value;
-        solvedAnswers[questionNo][0] = document.getElementById("opt_c").value
+        solvedAnswers[questionNo] = document.getElementById("opt_c").value
     }
     if(document.getElementById("opt_d").checked)
     {
-        clickedOption = document.getElementById("opt_d").value;
-        solvedAnswers[questionNo][0] = document.getElementById("opt_d").value
+        solvedAnswers[questionNo] = document.getElementById("opt_d").value
     }
-    if(checkCorrect() && solvedAnswers[questionNo][1] == 0)
-    {
-        
-        solvedAnswers[questionNo][1] = solvedAnswers[questionNo][1] + 1
-        totalMarksP = marksAddCoefficient+totalMarksP;
-        console.log(totalMarksP);
-    }
+    
     setTimeout(incQuesNo,1000);
 }
 
-function checkCorrect() {
-    if (clickedOption == answerCabinet[questionNo]) {
-        return true;
-    }
-}
 
+// func which handles direct setting of question number
 
 function queCabButtonClicked(num) {
     questionNo=num-1
-    setOptions(questionNo)
+    setOptions()
 }
+
+
+// func which handles the confirmation when the submit button is clicked
 
 function confirmSubmition() {
     if (confirm(`Your progress is ${progress}% do you want to submit?`)) {
@@ -224,12 +240,29 @@ function confirmSubmition() {
     }
 }
 
+
+// func which submits the quiz
+
 function submitQuiz() {
+
+
+    for (let j = 0; j < answerCabinet.length; j++) {
+        if (answerCabinet[j]==solvedAnswers[j][0]) {
+            totalMarksP = totalMarksP+marksAddCoefficient
+        }
+    }
+
+    console.log(totalMarksP)
+
     document.getElementById("submitP").style.display = "block"
     document.getElementById("submitP").innerHTML = `<p style="font-size:30px; text-align:center; margin-top: 40px">Your Score is</p>
-                                                    <p style="font-size:60px; text-align:center">${totalMarksP}</p>
+                                                    <p style="font-size:60px; text-align:center">${totalMarksP} %</p>
                                                     <button onclick="reloadPage()">Re-Play</button>`
 }
+
+
+
+// simple self explanatory functions
 
 function reloadPage() {
     location.reload();
