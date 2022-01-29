@@ -99,8 +99,8 @@ setOptions();
 // functions for increasing/decreasing current question number we are on
 
 function incQuesNo(params) {
-    if (questionNo!= (totalQues-1)) {                   //--------
-        questionNo = questionNo + 1;                           //|
+    if (questionNo!= (totalQues-1)) {
+        questionNo = questionNo + 1;
     }
     else{
         confirmSubmition()
