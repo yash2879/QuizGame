@@ -222,9 +222,9 @@ button:hover{
     }
 
     .panel{
-        top: 20vh;
+        top: 10vh;
         left: 5vw;
-        height: 60vh;
+        height: 80vh;
         width: 90vw;
     }
 }
